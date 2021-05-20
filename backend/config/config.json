@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "hakim",
+    "password": "mot_de_passe",
+    "database": "users",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "hakim",
+    "password": "mot_de_passe",
+    "database": "users",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "hakim",
+    "password": "mot_de_passe",
+    "database": "users",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
