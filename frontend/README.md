@@ -1,4 +1,4 @@
-# groupomania-front-end-vue-cli-app
+# frontend
 
 ## Project setup
 ```

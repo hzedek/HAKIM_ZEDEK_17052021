@@ -20,6 +20,7 @@ exports.signup = (req, res) => {
    const users = {
     email: req.body.email,
     password: hash,
+    pseudo:req.body.pseudo
   };
 
   // Save user in the database

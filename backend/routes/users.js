@@ -4,8 +4,8 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Tutorial
-    router.post("/", users.signup);
-    router.get("/", users.login)  
+    router.post("/signup", users.signup);
+    router.post("/login", users.login)  
   
     app.use('/api/users', router);
   };
