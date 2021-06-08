@@ -19,7 +19,6 @@
 </template>
 
 <style scoped lang="scss">
-#formLogin{
 
     input{
         &:invalid:not(:focus):not(:placeholder-shown) {
@@ -28,7 +27,6 @@
         font-size: 1.5em;
          margin:1em;
         }
-}
 </style>
 
 <script>

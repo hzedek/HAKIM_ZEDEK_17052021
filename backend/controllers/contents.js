@@ -27,7 +27,7 @@ exports.create = (req, res) => {
 
 // Find a user with his email
 exports.get = (req, res) => {
-    Content.findAll()
+    Content.findAll({order: [["createdAt", "DESC"]]})
     .then(data => {
         res.send(data);
       })

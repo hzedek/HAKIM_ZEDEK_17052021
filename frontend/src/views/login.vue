@@ -27,7 +27,7 @@
 </style>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
   name: "Login",
   data(){
@@ -37,15 +37,15 @@ export default {
     }
   },
   methods:{
-     getConnect(e){
+    async getConnect(e){
     e.preventDefault()
     const data ={  
       email:this.email,
       password:this.password,
     }
-   axios.post("http://localhost:4201/api/users/login",data)
-  .then(res=> console.log(res))
-  .catch(err=> console.log(err))
+  const response = await axios.post("http://localhost:4201/api/users/login",data)
+  localStorage.setItem('token', response.data.token);
+  this.$router.push('/');
   }}
   
 };
