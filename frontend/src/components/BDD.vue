@@ -1,10 +1,10 @@
 <template>
 <article>
 <div class="contents" v-bind:key="content" v-for="content in contents">
-    <p class="content">Pseudo</p>
+    <p class="content">{{info.Pseudo}}</p>
     <p>{{content.createdAt}}</p>
     <p class="content black" >{{content.title}}</p>
-  <p class="content">{{content.multimedia}}</p>
+  <img class="content" :src="`${content.multimedia}`" >
   <p class="content">{{content.text}}</p>
   <input type="button" value="Commenter">
   </div>
@@ -18,7 +18,8 @@ export default {
   name: "BDD",
   data() {
     return {
-      contents:[]
+      contents:[],
+      info:[]
     }
   },
  async mounted() {
@@ -30,7 +31,14 @@ export default {
       .catch((err) => {
         this.data = console.log(err);
       });
-  },
+  axios.get("http://localhost:4201/api/users",{
+        headers:{
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      .then(response=> console.log(this.info = response))
+    },
+  
 };
 </script>
 

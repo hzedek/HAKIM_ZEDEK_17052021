@@ -46,7 +46,6 @@ button{
   background-color: white;
   &:hover{
     color: blue;
-    margin-top: 100px;
   }
 }
 </style>

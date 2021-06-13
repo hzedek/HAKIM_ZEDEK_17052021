@@ -9,10 +9,8 @@
 <script>
 // @ is an alias to /src
 
-
 import BDD from "@/components/BDD.vue";
 import POST from "@/components/Post.vue";
-import axios from "axios";
 
 
 export default {
@@ -20,22 +18,7 @@ export default {
   components: {
     BDD,
     POST,
-  },
-  data(){
-    return{
-      info:""
-    }
-  },
- mounted(){
-axios.get("http://localhost:4201/api/users/",{
-        headers:{
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-      })
-      .then(response=> console.log(this.info = response))
-    }
-  
-};
+  }}
 </script>
 
 <style lang="scss">

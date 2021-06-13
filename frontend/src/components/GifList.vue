@@ -12,7 +12,9 @@ export default {
     props:{
         gifs: Array
     }
+    
 }
+
 </script>
 
 <style lang="scss" scoped>

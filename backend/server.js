@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require('path');
+
 
 const app = express();
 
@@ -19,10 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 const db = require ("./models");
 db.sequelize.sync();
 
-app.post('/', );
-app.get('/',);
-app.delete('/',);
-app.put('/',);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 require("./routes/contents")(app);
 require("./routes/users")(app);

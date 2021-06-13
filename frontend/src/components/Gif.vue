@@ -3,12 +3,12 @@
     class="gif"
     :style="{ backgroundImage: `url(${gif.images.original.url})` }"
   >
-    <div><button @click="copyUrl, postGif">ajouter</button></div>
+  
+    <button v-on:click="copyUrl">ajouter</button>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 export default {
   name: "Gif",
   data(){
@@ -18,26 +18,10 @@ export default {
   props: {
     gif: Object,
   },
-
   methods: {
     copyUrl() {
-      this.$ref.url.select();
-      document.execCommand({ commandid: "ajouter" });
-    },
-    async postGif(e) {
-      e.preventDefault();
-      const data = {
-        gifs: this.gifs,
-      };
-
-      await axios
-        .post("http://localhost:4201/api/contents", data)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      document.execCommand({ commandid: "ajouté" });
+      this.$emit('gifUrl','this.gif.images.original.url')
     },
   },
 };

@@ -5,24 +5,31 @@ const Op = db.Sequelize.Op;
 
 // create a user
 exports.create = (req, res) => {
-    
+  console.log(req.file);
    // Create a content
    const contents = {
     title: req.body.title,
-    text: req.body.text
+    text: req.body.text,
+    multimedia:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
   };
-
+  if (!req.file) {
+    return res.send('Please upload a file')
+ }
+ else(
+ 
   // Save user in the database
   Content.create(contents)
     .then(data => {
+      console.log("here<<<<<<<<<<<<<");
       res.send(data);
     })
     .catch(err => {
+      console.log(err,"Erreur<<<<<<<<<<<<<");
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the content."
       });
-    });
+    }))
   };
 
 // Find a user with his email

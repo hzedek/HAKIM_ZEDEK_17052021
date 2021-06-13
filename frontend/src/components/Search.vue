@@ -1,5 +1,5 @@
 <template>
-    <input type="text" placeholder="Type your GIF" v-model="keyword" v-on:click="search">
+    <input type="text" placeholder="Type your GIF" v-model="keyword" v-on:keyup="search">
 </template>
 
 <script>
@@ -20,15 +20,13 @@ export default {
                this.search();
            }, timeout=500)
        },*/
-       search(e){
-           e.preventDefault();
-          const keyword={keyword:this.keyword}
-           axios.get(`https://api.giphy.com/v1/gifs/search?api_key=hcbliDOiKNH4fFQ4Dh4CiqkAIBulLtit&q=${keyword}&limit=9`)
+       search(){
+          
+           axios.get(`https://api.giphy.com/v1/gifs/search?api_key=hcbliDOiKNH4fFQ4Dh4CiqkAIBulLtit&q=${this.keyword}&limit=9`)
            .then(res=>res.data)
-           .then(result =>{ console.log(result);this.$emit('fetch-gifs', result.data)})
+           .then(result =>{this.$emit('fetch-gifs', result.data)})
            
        }
    }
 }
- //hcbliDOiKNH4fFQ4Dh4CiqkAIBulLtit
 </script>
