@@ -21,8 +21,7 @@
 
     <Search @fetch-gifs="onFetch" />
     <Gif-list :gifs="gifs" />
-    
-
+ 
 
 
     <input type="submit" v-on:click="post" value="Poster" />
@@ -40,10 +39,10 @@
 import axios from "axios";
 import Search from "../components/Search.vue";
 import GifList from "../components/GifList.vue";
-//import Gif from "../components/Gif.vue"
+//import Gif from "../components/Gif";
 
 export default {
-  components: { Search, GifList},
+  components: {Search, GifList},
   name: "Post",
   data() {
     return {
@@ -51,13 +50,13 @@ export default {
       text: "",
       image:"",
       gifs: [],
+      Users_id:"",
+     //gif:""
     };
   },
 
   methods: {
-   /* getUrl(result){
-     this.gifs= result;
-   } ,*/
+   // emitter.on("gifUrl",e => console.log(e)),
     onFetch(result) {
       this.gifs = result;
     },
@@ -66,16 +65,19 @@ export default {
     },
     async post(e) {
       e.preventDefault();
-
       let formData = new FormData();
       formData.append('image',this.file);
+      formData.append('title',this.title);
+      formData.append('text', this.text);
+      formData.append('Users_id',JSON.parse(localStorage.getItem("userId")))
       const data = {
         title: this.title,
         text: this.text,
-        image:this.file,
-
-      };    
-      console.log(data);
+       image:this.file,
+       gif:this.gif,
+       Users_id: JSON.parse(localStorage.getItem("userId"))
+      };
+      
 
       try {
         await axios
@@ -85,11 +87,12 @@ export default {
     }})
           .then((res) => {
             console.log(res);
+           this.$router.push("/");
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err);console.log(data);
           });
-     //   this.$router.push("/");
+     
       } catch (err) {
         console.log(err);
       }

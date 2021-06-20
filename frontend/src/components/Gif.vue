@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue';
 export default {
   name: "Gif",
   data(){
@@ -20,8 +21,10 @@ export default {
   },
   methods: {
     copyUrl() {
-      document.execCommand({ commandid: "ajouté" });
-      this.$emit('gifUrl','this.gif.images.original.url')
+      const internalInstance = getCurrentInstance(); 
+      const emitter = internalInstance.appContext.config.globalProperties.emitter;
+      emitter.emit("gifUrl",this.gif.images.original.url)
+      console.log(this.gif.images.original.url);
     },
   },
 };

@@ -45,6 +45,7 @@ export default {
     }
   const response = await axios.post("http://localhost:4201/api/users/login",data)
   localStorage.setItem('token', response.data.token);
+  localStorage.setItem('userId', response.data.userId);
   this.$router.push('/');
   }}
   

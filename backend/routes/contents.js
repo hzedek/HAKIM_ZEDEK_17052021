@@ -4,6 +4,7 @@ module.exports = app => {
     const basicAuth =require('../middleware/auth');
     var router = require("express").Router();
     const multer = require('../middleware/multer');
+    const express = require('express');
 
   
     
@@ -11,8 +12,8 @@ module.exports = app => {
 
     router.post("/", multer, contents.create);
     router.get("/",  contents.get)
-    router.delete("/", contents.delete)
-    router.put("/", contents.update)
+    router.delete("/:id", contents.delete)
+    router.put("/:id", contents.update)
 
     app.use('/api/contents', router);
   };

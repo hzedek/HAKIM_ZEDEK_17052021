@@ -8,6 +8,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       multimedia:{
         type: Sequelize.STRING
+      },
+     Users_id: {
+        type: Sequelize.INTEGER 
       }
     });
   
