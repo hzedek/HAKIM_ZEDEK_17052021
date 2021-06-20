@@ -20,7 +20,7 @@
     </form>
 
     <Search @fetch-gifs="onFetch" />
-    <Gif-list :gifs="gifs" />
+    <Gif-list :gifs="gifs"  @giveUrl="gotUrl" />
  
 
 
@@ -39,7 +39,7 @@
 import axios from "axios";
 import Search from "../components/Search.vue";
 import GifList from "../components/GifList.vue";
-//import Gif from "../components/Gif";
+
 
 export default {
   components: {Search, GifList},
@@ -51,12 +51,14 @@ export default {
       image:"",
       gifs: [],
       Users_id:"",
-     //gif:""
+      gif:""
     };
   },
 
   methods: {
-   // emitter.on("gifUrl",e => console.log(e)),
+    gotUrl:function(value){
+      this.gif=value
+    },
     onFetch(result) {
       this.gifs = result;
     },
@@ -69,7 +71,8 @@ export default {
       formData.append('image',this.file);
       formData.append('title',this.title);
       formData.append('text', this.text);
-      formData.append('Users_id',JSON.parse(localStorage.getItem("userId")))
+      formData.append('Users_id',JSON.parse(localStorage.getItem("userId")));
+      formData.append('gif',this.gif)
       const data = {
         title: this.title,
         text: this.text,
@@ -87,7 +90,7 @@ export default {
     }})
           .then((res) => {
             console.log(res);
-           this.$router.push("/");
+            this.$router.push("/");
           })
           .catch((err) => {
             console.log(err);console.log(data);

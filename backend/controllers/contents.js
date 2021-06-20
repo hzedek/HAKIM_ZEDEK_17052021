@@ -7,14 +7,13 @@ const multer = require('multer')
 
 // create a user
 exports.create = (req, res) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
   // Create a content
   const contents = {
-
     title: req.body.title,
     text: req.body.text,
     multimedia: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    Users_id: req.body.Users_id
+    Users_id: req.body.Users_id,
+    gif:req.body.gif
   };
 
   // Save user in the database

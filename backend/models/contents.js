@@ -11,6 +11,9 @@ module.exports = (sequelize, Sequelize) => {
       },
      Users_id: {
         type: Sequelize.INTEGER 
+      },
+      gif:{
+        type: Sequelize.STRING
       }
     });
   

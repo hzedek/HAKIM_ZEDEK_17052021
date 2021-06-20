@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="contents" v-bind:key="content.id" v-for="content in contents">
-      <p class="content">{{ info.Pseudo }}</p>
+      <p class="content">{{ User.pseudo}}</p>
       <p>{{ content.createdAt }}</p>
       <p class="content black">{{ content.title }}</p>
       <img
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       contents: [],
-      info:[],
+      User:[],
     };
   },
   async mounted() {
@@ -35,12 +35,12 @@ export default {
       .catch((err) => {
         this.data = console.log(err);
       });
-    /*  axios.get("http://localhost:4201/api/users",{
+      axios.get("http://localhost:4201/api/users",{
         headers:{
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       })
-      .then(response=> console.log(this.info = response))*/
+      .then(response=> this.User = response)
   },
   methods: {
   deletePost(id) {

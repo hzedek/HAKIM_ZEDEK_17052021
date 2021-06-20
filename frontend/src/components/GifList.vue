@@ -1,6 +1,6 @@
 <template>
   <div id="gifList">
-    <Gif v-for="gif in gifs" :key="gif.id" :gif="gif" @gifUrl="getUrl" />
+    <Gif v-for="gif in gifs" :key="gif.id" v-model="gifUrl" :gif="gif" @gifUrl="getUrl" />
   </div>
 </template>
 
@@ -11,13 +11,11 @@ export default {
     components:{Gif},
     props:{
         gifs: Array,
-        
-       
-
     },
-    methods:{getUrl(result){
-     this.gif= result;
-     console.log(result);
+    methods:{
+      getUrl: function (value){
+     this.$emit('giveUrl', value)
+     
         }
     
     }}

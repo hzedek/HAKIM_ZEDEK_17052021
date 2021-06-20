@@ -4,12 +4,11 @@
     :style="{ backgroundImage: `url(${gif.images.original.url})` }"
   >
   
-    <button v-on:click="copyUrl">ajouter</button>
+    <button  v-on:click="copyUrl">ajouter</button>
   </div>
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue';
 export default {
   name: "Gif",
   data(){
@@ -21,10 +20,7 @@ export default {
   },
   methods: {
     copyUrl() {
-      const internalInstance = getCurrentInstance(); 
-      const emitter = internalInstance.appContext.config.globalProperties.emitter;
-      emitter.emit("gifUrl",this.gif.images.original.url)
-      console.log(this.gif.images.original.url);
+      this.$emit("gifUrl",this.gif.images.original.url)
     },
   },
 };
