@@ -4,23 +4,19 @@ const Op = db.Sequelize.Op;
 const fs = require('fs');
 const multer = require('multer')
 
-
-// create a user
 exports.create = (req, res) => {
   // Create a content
+
+  if (req.file) {
   const contents = {
     title: req.body.title,
     text: req.body.text,
     multimedia: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     Users_id: req.body.Users_id,
-    gif:req.body.gif
-  };
-
-  // Save user in the database
+  } // Save user in the database
   Content.create(contents)
     .then(data => {
-
-      res.send(data);
+      res.send(data);console.log("req.file",req.file);
     })
     .catch(err => {
       console.log(err, "Erreur<<<<<<<<<<<<<");
@@ -28,8 +24,47 @@ exports.create = (req, res) => {
         message:
           err.message || "Some error occurred while creating the content."
       });
-    })
-};
+    })}
+
+  if (req.body.gif) {
+    const contents = {
+      title: req.body.title,
+      text: req.body.text,
+      Users_id: req.body.Users_id,
+      gif: req.body.gif
+    } // Save user in the database
+    Content.create(contents)
+      .then(data => {
+        res.send(data);console.log(req.body.gif,"req.body.gif");
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the content."
+        });
+      })
+  }
+
+  if (!req.file && !req.body.gif) {
+    const contents = {
+      title: req.body.title,
+      text: req.body.text,
+      Users_id: req.body.Users_id,
+    }
+    // Save user in the database
+    Content.create(contents)
+      .then(data => {
+        res.send(data);console.log(data,"!req.file || !req.body.gif");
+      })
+      .catch(err => {
+        console.log(err, "Erreur<<<<<<<<<<<<<");
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the content."
+        });
+      })
+  }
+}
 
 // Find a user with his email
 exports.get = (req, res) => {
@@ -67,14 +102,19 @@ exports.update = (req, res) => {
 // Delete a user with the specified id in the request
 exports.delete = (req, res) => {
   Content.findOne({ where: { id: req.params.id } })
-    .then(res => {
-      const filename = res.multimedia.split('/images/')[1];
+    .then(res => { 
+      if (res.multimedia) {
+        const filename = res.multimedia.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         Content.destroy({ where: { id: req.params.id } })
           .then((res) => console.log(res))
           .catch(error => console.log(error))
-      })
+      })}
+      Content.destroy({ where: { id: req.params.id } })
+      .then((res) => console.log(res))
+      .catch(error => console.log(error))
     })
-    .then(res => res.status(200).json({message: 'contenu supprimé !' }))
+    .then(res => console.log(res))
     .catch(error => console.log(error))
-}
+  
+  }

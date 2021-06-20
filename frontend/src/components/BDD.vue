@@ -4,9 +4,13 @@
       <p class="content">{{ User.pseudo}}</p>
       <p>{{ content.createdAt }}</p>
       <p class="content black">{{ content.title }}</p>
-      <img
+      <img v-bind:key="content.multimedia" v-if="`${content.multimedia}`!== undefined"
         class="content"
         :src="`${content.multimedia}`"
+      />
+      <img
+        class="content"
+        :src="`${content.gif}`"
       />
       <p class="content">{{ content.text }}</p>
       <input type="button" value="Commenter" />
