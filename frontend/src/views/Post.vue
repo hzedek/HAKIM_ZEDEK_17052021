@@ -20,7 +20,7 @@
     </form>
 
     <Search @fetch-gifs="onFetch" />
-    <Gif-list :gifs="gifs"  @giveUrl="gotUrl" />
+    <Gif-list :gifs="gifs" @giveUrl="gotUrl" />
  
 
 

@@ -66,7 +66,7 @@ exports.create = (req, res) => {
   }
 }
 
-// Find a user with his email
+// Find all contents
 exports.get = (req, res) => {
   Content.findAll({ order: [["createdAt", "DESC"]] })
     .then(data => {
@@ -79,23 +79,47 @@ exports.get = (req, res) => {
       });
     });
 };
-//Update a Content identified by the id in the request:
-exports.update = (req, res) => {
-  const id = req.params.id;
 
-  Content.update(req.body, {
-    where: { id: id }
-  })
-    .then(
-      res.send({
-        message: "Content was updated successfully."
-      })
-    )
+// Find one content
+exports.getById = (req, res) => {
+  Content.findOne({ where: { id: req.params.id } })
+    .then(data => {
+      res.send(data);
+    })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Content with id=" + id
+        message:
+          err.message || "Some error occurred while retrieving Contents."
       });
     });
+};
+
+//Update a Content identified by the id
+exports.update = (req, res) => {
+  const id = req.params.id;
+  Content.findOne({ where: { id:id } })
+  .then(res => { 
+ if (req.file) {
+    Content.update({text:req.body.text,title:req.body.title,
+      multimedia:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`},{where:{id:id}})
+      .then(Content=> console.log(Content))
+      .catch(error => console.log(error))
+  }
+  if(req.body.gif){
+    Content.update({text:req.body.text,title:req.body.title,gif:req.body.gif},{
+      where: { id: id }})
+      .then((res) => console.log(res),{message:" update done"})
+      .catch(error => console.log(error))
+  }
+   else{
+  Content.update({text:req.body.text,title:req.body.title},{
+    where: { id: id }
+  })
+  .then((res) => console.log(res),{message:" update done"})
+  .catch(error => console.log(error))
+  }
+  }
+    )
 };
 
 

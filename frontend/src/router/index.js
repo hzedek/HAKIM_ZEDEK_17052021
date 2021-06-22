@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/login.vue";
 import SignUp from "../views/signup.vue";
-import Post from "../views/Post.vue"
+import Post from "../views/Post.vue";
+import Modify from "../views/Modify";
+
 
 const routes = [
   {
@@ -34,6 +36,12 @@ const routes = [
     name: "post",
     component: Post,
   },
+  {
+    path: "/modify/:id",
+    name: "modify",
+    component: Modify
+  },
+  
 
 ];
 

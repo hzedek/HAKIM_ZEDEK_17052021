@@ -1,20 +1,24 @@
 <template>
   <article>
     <div class="contents" v-bind:key="content.id" v-for="content in contents">
-      <p class="content">{{ User.pseudo}}</p>
+      <p class="content">{{ User.pseudo }}</p>
       <p>{{ content.createdAt }}</p>
       <p class="content black">{{ content.title }}</p>
-      <img v-bind:key="content.multimedia" v-if="`${content.multimedia}`!== undefined"
+      <img
+        v-bind:key="content.multimedia"
+        v-if="`${content.multimedia}` !== undefined"
         class="content"
         :src="`${content.multimedia}`"
       />
-      <img
-        class="content"
-        :src="`${content.gif}`"
-      />
+      <img class="content" :src="`${content.gif}`" />
       <p class="content">{{ content.text }}</p>
       <input type="button" value="Commenter" />
-      <button type="button" v-on:click="deletePost(content.id)">Supprimer</button>
+      <button type="button" v-on:click="deletePost(content.id)">
+        Supprimer
+      </button>
+      <router-link :to="{name:'modify',params:{id:`${content.id}`}}"><button type="button">
+        Modifier
+      </button></router-link> 
     </div>
   </article>
 </template>
@@ -27,7 +31,7 @@ export default {
   data() {
     return {
       contents: [],
-      User:[],
+      User: [],
     };
   },
   async mounted() {
@@ -39,28 +43,36 @@ export default {
       .catch((err) => {
         this.data = console.log(err);
       });
-      axios.get("http://localhost:4201/api/users",{
-        headers:{
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
+   await axios
+      .get("http://localhost:4201/api/users", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
       })
-      .then(response=> this.User = response)
+      .then((response) => (this.User = response));
   },
-  methods: {
-  deletePost(id) {
-    axios.delete(`http://localhost:4201/api/contents/`+ id,{
-      headers:{
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }},{
-        data:{id:"id"}
-    })
-    .then((res) => {
-            console.log(res);
+  methods: {deletePost(id) {
+      axios
+        .delete(
+          `http://localhost:4201/api/contents/` + id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          },
+          {
+            data: { id: "id" },
+          }
+        )
+        .then((res) => {
+          console.log(res);
           this.$router.push("/");
-          })
-          .catch((err) => {
-            console.log(err);
-          });}}
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
 

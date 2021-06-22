@@ -11,9 +11,9 @@ module.exports = app => {
     // Create a new Content
 
     router.post("/", multer, contents.create);
-    router.get("/",  contents.get)
-    router.delete("/:id", contents.delete)
-    router.put("/:id", contents.update)
-
+    router.get("/",  contents.get);
+    router.get("/:id",  contents.getById);
+    router.delete("/:id",multer, contents.delete);
+    router.put("/:id", multer, contents.update);
     app.use('/api/contents', router);
   };
