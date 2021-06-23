@@ -12,7 +12,7 @@
       />
       <img class="content" :src="`${content.gif}`" />
       <p class="content">{{ content.text }}</p>
-      <input type="button" value="Commenter" />
+      <input type="text" class="comentaire" />
       <button type="button" v-on:click="deletePost(content.id)">
         Supprimer
       </button>
@@ -39,6 +39,7 @@ export default {
       .get("http://localhost:4201/api/contents")
       .then((res) => {
         this.contents = res.data;
+        console.log(this.contents);
       })
       .catch((err) => {
         this.data = console.log(err);
@@ -77,6 +78,7 @@ export default {
 </script>
 
  <style scoped lang="scss">
+
 .contents {
   border: 2px solid transparent;
   background-color: rgb(189, 189, 189);
@@ -98,10 +100,9 @@ export default {
   }
   input {
     border: none;
-    background-color: rgb(189, 189, 189);
+   // background-color: rgb(189, 189, 189);
     font-weight: bold;
     font-size: 1.1em;
-    color: white;
   }
 }
 img {

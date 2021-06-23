@@ -68,7 +68,7 @@ exports.create = (req, res) => {
 
 // Find all contents
 exports.get = (req, res) => {
-  Content.findAll({ order: [["createdAt", "DESC"]] })
+  Content.findAll({ order: [["createdAt", "DESC"]],include:[db.Users] })
     .then(data => {
       res.send(data);
     })

@@ -17,6 +17,10 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   
-    
+    Contents.associate = models =>{
+      Contents.belongsTo(models.Users, {
+        foreignKey: "Users_id" , allowNull:false })
+    }
+
     return Contents;
   };

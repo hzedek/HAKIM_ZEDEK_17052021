@@ -16,6 +16,10 @@ module.exports = (sequelize, Sequelize) => {
     }
   });
 
+  User.associate = models =>{
+    User.hasMany(models.Contents, {foreignKey:'id' ,onDelete: "cascade"})
+  }
+
   
   return User;
 };
