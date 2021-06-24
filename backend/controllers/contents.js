@@ -3,6 +3,7 @@ const Content = db.Contents;
 const Op = db.Sequelize.Op;
 const fs = require('fs');
 const multer = require('multer')
+const Comments= db.Commeents;
 
 exports.create = (req, res) => {
   // Create a content
@@ -70,7 +71,7 @@ exports.create = (req, res) => {
 exports.get = (req, res) => {
   Content.findAll({ order: [["createdAt", "DESC"]],include:[db.Users] })
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     })
     .catch(err => {
       res.status(500).send({
@@ -98,24 +99,24 @@ exports.getById = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   Content.findOne({ where: { id:id } })
-  .then(res => { 
+  .then(data => { 
  if (req.file) {
     Content.update({text:req.body.text,title:req.body.title,
       multimedia:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`},{where:{id:id}})
-      .then(Content=> console.log(Content))
+      .then(res.status(200).json({Sauce, message: 'contenu modifié !' }))
       .catch(error => console.log(error))
   }
   if(req.body.gif){
     Content.update({text:req.body.text,title:req.body.title,gif:req.body.gif},{
       where: { id: id }})
-      .then((res) => console.log(res),{message:" update done"})
+      .then(res.status(200).json({Sauce, message: 'Sauce modifiée !' }))
       .catch(error => console.log(error))
   }
    else{
   Content.update({text:req.body.text,title:req.body.title},{
     where: { id: id }
   })
-  .then((res) => console.log(res),{message:" update done"})
+  .then(res.status(200).json({Sauce, message: 'Sauce modifiée !' }))
   .catch(error => console.log(error))
   }
   }
@@ -126,17 +127,17 @@ exports.update = (req, res) => {
 // Delete a user with the specified id in the request
 exports.delete = (req, res) => {
   Content.findOne({ where: { id: req.params.id } })
-    .then(res => { 
-      if (res.multimedia) {
-        const filename = res.multimedia.split('/images/')[1];
-      fs.unlink(`images/${filename}`, () => {
+    .then(result => { 
+      if (result.multimedia) {
+        const filename = result.multimedia.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {})
         Content.destroy({ where: { id: req.params.id } })
-          .then((res) => console.log(res))
+          .then(() => res.status(200).json({ message: 'Content supprimée !' }))
           .catch(error => console.log(error))
-      })}
-      Content.destroy({ where: { id: req.params.id } })
-      .then((res) => console.log(res))
-      .catch(error => console.log(error))
+      }
+      else{Content.destroy({ where: { id: req.params.id } })
+      .then(() => res.status(200).json({ message: 'COntent supprimée !' }))
+      .catch(error => console.log(error))}
     })
     .then(res => console.log(res))
     .catch(error => console.log(error))

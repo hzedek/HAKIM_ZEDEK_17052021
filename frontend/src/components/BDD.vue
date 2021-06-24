@@ -1,24 +1,25 @@
 <template>
   <article>
     <div class="contents" v-bind:key="content.id" v-for="content in contents">
-      <p class="content">{{ User.pseudo }}</p>
+      <p class="content">{{ content.User.pseudo }}</p>
       <p>{{ content.createdAt }}</p>
       <p class="content black">{{ content.title }}</p>
       <img
-        v-bind:key="content.multimedia"
-        v-if="`${content.multimedia}` !== undefined"
+        v-if="`${content.multimedia}`"
         class="content"
         :src="`${content.multimedia}`"
       />
-      <img class="content" :src="`${content.gif}`" />
+      <div v-if="`${content.gif}`!==null" >
+      <img class="content" :src="`${content.gif}`"/></div>
       <p class="content">{{ content.text }}</p>
-      <input type="text" class="comentaire" />
-      <button type="button" v-on:click="deletePost(content.id)">
+      <input type="text" v-model="comments" placeholder="commenter" />
+      <button type="button" v-on:click="commentPost(content.id)">Envoyer</button>
+      <button type="button" v-on:click="()=>deletePost(content.id)">
         Supprimer
       </button>
-      <router-link :to="{name:'modify',params:{id:`${content.id}`}}"><button type="button">
-        Modifier
-      </button></router-link> 
+      <router-link :to="{ name: 'modify', params: { id: `${content.id}` } }"
+        ><button type="button">Modifier</button></router-link
+      >
     </div>
   </article>
 </template>
@@ -32,6 +33,7 @@ export default {
     return {
       contents: [],
       User: [],
+      comments:"",
     };
   },
   async mounted() {
@@ -39,12 +41,12 @@ export default {
       .get("http://localhost:4201/api/contents")
       .then((res) => {
         this.contents = res.data;
-        console.log(this.contents);
+        console.log(res.data);
       })
       .catch((err) => {
         this.data = console.log(err);
       });
-   await axios
+    await axios
       .get("http://localhost:4201/api/users", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -52,25 +54,38 @@ export default {
       })
       .then((response) => (this.User = response));
   },
-  methods: {deletePost(id) {
-      axios
-        .delete(
-          `http://localhost:4201/api/contents/` + id,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          },
-          {
-            data: { id: "id" },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-          this.$router.push("/");
+  methods: {
+    async commentPost(id){
+      const data = {
+        comments: this.comments,
+        Users_id: JSON.parse(localStorage.getItem("userId")),
+        Contents_id:id,
+      };
+      try{
+        console.log(data);
+        await axios
+          .post("http://localhost:4201/api/Comments",data)
+          .then((res) => {
+            console.log(res);
+            location.reload()
+          })
+          .catch((err) => {
+            console.log(err);console.log(data);
+          });
+      }
+      catch (err) {
+        console.log(err);
+      }
+    },
+    deletePost(id) {
+      axios.delete(`http://localhost:4201/api/contents/${id}`)
+        .then(() => {
+          console.log("SUCCESS");
+          location.reload()
         })
         .catch((err) => {
           console.log(err);
+          console.log("11111>>>>>>>");
         });
     },
   },
@@ -78,7 +93,6 @@ export default {
 </script>
 
  <style scoped lang="scss">
-
 .contents {
   border: 2px solid transparent;
   background-color: rgb(189, 189, 189);
@@ -100,7 +114,7 @@ export default {
   }
   input {
     border: none;
-   // background-color: rgb(189, 189, 189);
+    // background-color: rgb(189, 189, 189);
     font-weight: bold;
     font-size: 1.1em;
   }
