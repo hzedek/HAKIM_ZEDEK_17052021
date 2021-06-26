@@ -2,7 +2,7 @@ const db = require("../models");
 const Content = db.Contents;
 const Op = db.Sequelize.Op;
 const fs = require('fs');
-const multer = require('multer')
+const multer = require('multer');
 
 
 exports.create = (req, res) => {

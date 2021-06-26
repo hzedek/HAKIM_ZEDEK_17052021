@@ -25,7 +25,7 @@ exports.create = (req, res) => {
 
 // Find all Comments
 exports.get = (req, res) => {
-    Comments.findAll({ include:[db.Users,db.Contents],})
+    Comments.findAll({include:[db.Users,db.Contents],})
       .then(data => {
         res.status(200).send(data);
       })

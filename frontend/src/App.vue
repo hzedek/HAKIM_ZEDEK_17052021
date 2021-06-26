@@ -13,7 +13,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #7e868f;
   margin: 0px;
   padding: 0px;
   
