@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     }
     Comments.create(comment)
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     })
     .catch(err => {
       console.log(err, "Erreur<<<<<<<<<<<<<");
@@ -25,9 +25,9 @@ exports.create = (req, res) => {
 
 // Find all Comments
 exports.get = (req, res) => {
-    Comments.findAll({ order: [["createdAt", "DESC"]],include:[db.Users] })
+    Comments.findAll({ include:[db.Users,db.Contents],})
       .then(data => {
-        res.send(data);
+        res.status(200).send(data);
       })
       .catch(err => {
         res.status(500).send({
@@ -39,24 +39,17 @@ exports.get = (req, res) => {
 
   exports.update = (req, res) => {
     const id = req.params.id;
-    Comments.findOne({ where: { id:id } })
-    .then(res => { 
         Comments.update({comments:req.body.comments},{
       where: { id: id }}
       )
-    .then((res) => console.log(res),{message:" update done"})
+    .then((data) => res.status(200).json({ message: 'Commentaire update !' }))
     .catch(error => console.log(error))
-  })};
+  };
 
   // Delete a Comments with the specified id in the request
 exports.delete = (req, res) => {
-    Comments.findOne({ where: { id: req.params.id } })
-      .then(res => { 
-        Comments.destroy({ where: { id: req.params.id } })
-        .then((res) => console.log(res))
+
+        Comments.destroy({ where:{id: req.params.id }})
+        .then((datas) => res.status(200).json({ message: 'Commentaire supprimée !' }))
         .catch(error => console.log(error))
-      })
-      .then(res => console.log(res))
-      .catch(error => console.log(error))
-    
-    }
+      }

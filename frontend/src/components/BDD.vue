@@ -4,14 +4,14 @@
       <p class="content">{{ content.User.pseudo }}</p>
       <p>{{ content.createdAt }}</p>
       <p class="content black">{{ content.title }}</p>
+      <div v-if="`${content.multimedia}`">
       <img
-        v-if="`${content.multimedia}`"
         class="content"
         :src="`${content.multimedia}`"
-      />
-      <div v-if="`${content.gif}`!==null" >
+      /></div>
+      <div v-if="`${content.gif}`">
       <img class="content" :src="`${content.gif}`"/></div>
-      <p class="content">{{ content.text }}</p>
+      <p class="content">{{content.text}}</p>
       <input type="text" v-model="comments" placeholder="commenter" />
       <button type="button" v-on:click="commentPost(content.id)">Envoyer</button>
       <button type="button" v-on:click="()=>deletePost(content.id)">
@@ -81,7 +81,8 @@ export default {
       axios.delete(`http://localhost:4201/api/contents/${id}`)
         .then(() => {
           console.log("SUCCESS");
-          location.reload()
+         location.reload()
+         
         })
         .catch((err) => {
           console.log(err);

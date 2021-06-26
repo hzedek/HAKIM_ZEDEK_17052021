@@ -3,7 +3,7 @@ const Content = db.Contents;
 const Op = db.Sequelize.Op;
 const fs = require('fs');
 const multer = require('multer')
-const Comments= db.Commeents;
+
 
 exports.create = (req, res) => {
   // Create a content
@@ -17,7 +17,7 @@ exports.create = (req, res) => {
   } // Save user in the database
   Content.create(contents)
     .then(data => {
-      res.send(data);console.log("req.file",req.file);
+      res.status(200).send(data);
     })
     .catch(err => {
       console.log(err, "Erreur<<<<<<<<<<<<<");
@@ -36,7 +36,7 @@ exports.create = (req, res) => {
     } // Save user in the database
     Content.create(contents)
       .then(data => {
-        res.send(data);console.log(req.body.gif,"req.body.gif");
+        res.status(200).send(data);
       })
       .catch(err => {
         res.status(500).send({
@@ -55,7 +55,7 @@ exports.create = (req, res) => {
     // Save user in the database
     Content.create(contents)
       .then(data => {
-        res.send(data);console.log(data,"!req.file || !req.body.gif");
+        res.status(200).send(data);
       })
       .catch(err => {
         console.log(err, "Erreur<<<<<<<<<<<<<");
@@ -69,7 +69,7 @@ exports.create = (req, res) => {
 
 // Find all contents
 exports.get = (req, res) => {
-  Content.findAll({ order: [["createdAt", "DESC"]],include:[db.Users] })
+  Content.findAll({ order: [["createdAt", "DESC"]],include:[db.Users,db.Comments] })
     .then(data => {
       res.status(200).send(data);
     })
@@ -85,7 +85,7 @@ exports.get = (req, res) => {
 exports.getById = (req, res) => {
   Content.findOne({ where: { id: req.params.id } })
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     })
     .catch(err => {
       res.status(500).send({
@@ -103,20 +103,20 @@ exports.update = (req, res) => {
  if (req.file) {
     Content.update({text:req.body.text,title:req.body.title,
       multimedia:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`},{where:{id:id}})
-      .then(res.status(200).json({Sauce, message: 'contenu modifié !' }))
+      .then(res.status(200).json({message: 'contenu modifié !' }))
       .catch(error => console.log(error))
   }
   if(req.body.gif){
     Content.update({text:req.body.text,title:req.body.title,gif:req.body.gif},{
       where: { id: id }})
-      .then(res.status(200).json({Sauce, message: 'Sauce modifiée !' }))
+      .then(res.status(200).json({message: 'Content modifiée !' }))
       .catch(error => console.log(error))
   }
    else{
   Content.update({text:req.body.text,title:req.body.title},{
     where: { id: id }
   })
-  .then(res.status(200).json({Sauce, message: 'Sauce modifiée !' }))
+  .then(res.status(200).json({message: 'Content modifiée !' }))
   .catch(error => console.log(error))
   }
   }

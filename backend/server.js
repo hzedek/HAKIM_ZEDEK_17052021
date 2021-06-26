@@ -26,6 +26,20 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 require("./routes/contents")(app);
 require("./routes/users")(app);
 require("./routes/comments")(app);
+
+
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.locals.error = err;
+  const status = err.status || 500;
+  res.status(status);
+  res.render('error');
+});
 // set port, listen for requests
 const PORT = process.env.PORT || 4201;
 app.listen(PORT, () => {
