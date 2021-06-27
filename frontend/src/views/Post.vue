@@ -86,7 +86,8 @@ export default {
         await axios
           .post("http://localhost:4201/api/contents",formData,{data,
     headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        Authorization: "Bearer " + localStorage.getItem("token"),
     }})
           .then((res) => {
             console.log(res);

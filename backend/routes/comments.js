@@ -5,9 +5,11 @@ module.exports = app => {
     const express = require('express');
 
     
-    router.post("/", Comments.create);
+    router.post("/",basicAuth, Comments.create);
     router.get("/",  Comments.get);
-    router.delete("/:id",Comments.delete);
-    router.put("/:id", Comments.update);
+    router.get("/:Contents_id",  Comments.getById);
+    router.delete("/:id",basicAuth, Comments.delete);
+   // router.put("/:id", Comments.update);
+
     app.use('/api/Comments', router);
   };

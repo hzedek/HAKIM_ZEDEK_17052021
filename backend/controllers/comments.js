@@ -25,7 +25,20 @@ exports.create = (req, res) => {
 
 // Find all Comments
 exports.get = (req, res) => {
-    Comments.findAll({include:[db.Users,db.Contents],})
+    Comments.findAll({include:[db.Users,db.Contents]})
+      .then(data => {
+        res.status(200).send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving Contents."
+        });
+      });
+  };
+
+  exports.getById = (req, res) => {
+    Comments.findAll({ where: {Contents_id:req.params.Contents_id } })
       .then(data => {
         res.status(200).send(data);
       })
@@ -50,6 +63,6 @@ exports.get = (req, res) => {
 exports.delete = (req, res) => {
 
         Comments.destroy({ where:{id: req.params.id }})
-        .then((datas) => res.status(200).json({ message: 'Commentaire supprimée !' }))
+        .then(() => res.status(200).json({ message: 'Commentaire supprimée !' }))
         .catch(error => console.log(error))
       }

@@ -2,7 +2,7 @@
   <article>
     <div class="contents" v-bind:key="content.id+ index" v-for="(content, index) in contents">
       <p class="pseudo">{{ content.User.pseudo }}</p>
-      <!--  <fa icon="robot"/> -->
+      <!--  <fa icon="paper-plane"/> -->
       <!-- <p>{{ content.createdAt }}</p> -->
       <p class="content black">{{ content.text }}</p>
       <div v-if="content.multimedia">
@@ -12,19 +12,22 @@
         <img :src="`${content.gif}`" />
       </div>
       <p>Commentaire</p>
-      <div class="commentaires" v-bind:key="commentaire.id+ index" v-for="(commentaire, index) in comment">
-        <p class="pseudo">{{ content.User.pseudo }}</p>
+      <div class="commentaires" v-bind:key="commentaire.id+ index" v-for="(commentaire, index) in comments" >
+       <div v-if="content.id == commentaire.Contents_id">
+      <p class="pseudo">{{ commentaire.User.pseudo }}</p>
         <p class="commentaire">{{commentaire.comments}}</p>
+        <button v-if="commentaire.Users_id == userid" v-on:click="deleteCom(commentaire.id)"><fa icon="times-circle"/></button>
+         </div>
         </div>
-      <input type="text" v-model="comments" placeholder="commenter" />
+      <input type="text" v-model="comment" placeholder="commenter" />
       <button type="button" v-on:click="commentPost(content.id)">
-        Envoyer
+        <fa  icon="paper-plane"/>
       </button>
-      <button type="button" v-on:click="() => deletePost(content.id)">
+      <button type="button" v-if="content.Users_id == userid" v-on:click="deletePost(content.id)">
         Supprimer
       </button>
       <router-link :to="{ name: 'modify', params: { id: `${content.id}` } }"
-        ><button type="button">Modifier</button></router-link
+        ><button v-if="content.Users_id == userid" type="button">Modifier</button></router-link
       >
     </div>
   </article>
@@ -40,12 +43,13 @@ export default {
     return {
       contents: [],
       User: [],
-      comments: "",
-      comment:[]
+      comment: "",
+      comments:[],
+      userid: localStorage.getItem("userId")
     };
   },
   async mounted() {
-    await axios.get("http://localhost:4201/api/contents")
+   await axios.get("http://localhost:4201/api/contents")
       .then((res) => {
         this.contents = res.data;
         console.log(res.data);
@@ -53,29 +57,41 @@ export default {
       .catch((err) => {
         this.data = console.log(err);
       });
+
     await axios.get("http://localhost:4201/api/users", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((response) => (this.User = response));
+      .then((response) => (this.User = response))
+      .catch((err) => {
+        this.data = console.log(err);
+      });
     await axios.get("http://localhost:4201/api/Comments")
     .then((res) => {
-            this.comment=res.data
+            this.comments=res.data
             console.log(res.data);
           })
+    .catch((err) => {
+        this.data = console.log(err);
+      });
     ;
   },
   methods: {
+    //CREER UN COMMENTAIRE
     async commentPost(id) {
       const data = {
-        comments: this.comments,
+        comments: this.comment,
         Users_id: JSON.parse(localStorage.getItem("userId")),
         Contents_id: id,
       };
       try {
         console.log(data);
-        await axios.post("http://localhost:4201/api/Comments", data)
+        await axios.post("http://localhost:4201/api/Comments", data , {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("token")
+        },
+      })
           .then((res) => {
             console.log(res);
             location.reload();
@@ -88,6 +104,7 @@ export default {
         console.log(err);
       }
     },
+    //SUPPRIMER UN POST
     deletePost(id) {
       axios.delete(`http://localhost:4201/api/contents/${id}`)
         .then(() => {
@@ -97,6 +114,18 @@ export default {
         .catch((err) => {
           console.log(err);
           console.log("11111>>>>>>>");
+        });
+    },
+    //SUPPRIMER UN Commentaire
+    deleteCom(id) {
+      axios.delete(`http://localhost:4201/api/Comments/${id}`)
+        .then(() => {
+          console.log("SUCCESS");
+          location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("nooo>>>>>>>");
         });
     },
   },

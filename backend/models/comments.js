@@ -7,9 +7,8 @@ module.exports = (sequelize, Sequelize) => {
         Comments.belongsTo(models.Users, {
         foreignKey: "Users_id" , allowNull:false
      }),
-     Comments.belongsTo(models.Contents, {
-      foreignKey: "Contents_id" 
-   })
+     Comments.belongsTo(models.Contents, {foreignKey: "Contents_id" })
+   //,Comments.hasOne(models.Contents, { foreignKey: "Contents_id"  })
     }
 
     return Comments;
