@@ -1,6 +1,10 @@
 <template>
   <article>
-    <div class="contents" v-bind:key="content.id+ index" v-for="(content, index) in contents">
+    <div
+      class="contents"
+      v-bind:key="content.id + index"
+      v-for="(content, index) in contents"
+    >
       <p class="pseudo">{{ content.User.pseudo }}</p>
       <!--  <fa icon="paper-plane"/> -->
       <!-- <p>{{ content.createdAt }}</p> -->
@@ -11,23 +15,50 @@
       <div v-if="content.gif">
         <img :src="`${content.gif}`" />
       </div>
-      <p>Commentaire</p>
-      <div class="commentaires" v-bind:key="commentaire.id+ index" v-for="(commentaire, index) in comments" >
-       <div v-if="content.id == commentaire.Contents_id">
-      <p class="pseudo">{{ commentaire.User.pseudo }}</p>
-        <p class="commentaire">{{commentaire.comments}}</p>
-        <button v-if="commentaire.Users_id == userid" v-on:click="deleteCom(commentaire.id)"><fa icon="times-circle"/></button>
-         </div>
+<!-- --------Commentaire------- -->
+      <p id="commentaireLine">Commentaire</p>
+      <div
+        class="commentaires"
+        v-bind:key="commentaire.id + index"
+        v-for="(commentaire, index) in comments"
+      >
+        <div v-if="content.id == commentaire.Contents_id">
+          <p class="pseudo">{{ commentaire.User.pseudo }}</p>
+          <div class="deleteIcon">
+          <p class="commentaire">{{ commentaire.comments }}</p>
+          <button class="deleteicon"
+            v-if="commentaire.Users_id == userid"
+            v-on:click="deleteCom(commentaire.id)"
+          >
+            <fa class="red" icon="times-circle" />
+          </button>
+          </div>
         </div>
-      <input type="text" v-model="comment" placeholder="commenter" />
-      <button type="button" v-on:click="commentPost(content.id)">
-        <fa  icon="paper-plane"/>
+      </div>
+      <div class="textComment">
+      <textarea
+        class="commentField"
+        v-model="comment"
+        placeholder="Laissez un commentaire ..."
+        
+      ></textarea>
+      <button  class="buttonPlane" type="button" v-on:click="commentPost(content.id)">
+        <fa icon="paper-plane" />
       </button>
-      <button type="button" v-if="content.Users_id == userid" v-on:click="deletePost(content.id)">
+      </div>
+
+
+      <button
+        type="button"
+        v-if="content.Users_id == userid"
+        v-on:click="deletePost(content.id)"
+      >
         Supprimer
       </button>
       <router-link :to="{ name: 'modify', params: { id: `${content.id}` } }"
-        ><button v-if="content.Users_id == userid" type="button">Modifier</button></router-link
+        ><button v-if="content.Users_id == userid" type="button">
+          Modifier
+        </button></router-link
       >
     </div>
   </article>
@@ -36,7 +67,6 @@
 <script>
 import axios from "axios";
 
-
 export default {
   name: "BDD",
   data() {
@@ -44,12 +74,13 @@ export default {
       contents: [],
       User: [],
       comment: "",
-      comments:[],
-      userid: localStorage.getItem("userId")
+      comments: [],
+      userid: localStorage.getItem("userId"),
     };
   },
   async mounted() {
-   await axios.get("http://localhost:4201/api/contents")
+    await axios
+      .get("http://localhost:4201/api/contents")
       .then((res) => {
         this.contents = res.data;
         console.log(res.data);
@@ -58,7 +89,8 @@ export default {
         this.data = console.log(err);
       });
 
-    await axios.get("http://localhost:4201/api/users", {
+    await axios
+      .get("http://localhost:4201/api/users", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -67,15 +99,15 @@ export default {
       .catch((err) => {
         this.data = console.log(err);
       });
-    await axios.get("http://localhost:4201/api/Comments")
-    .then((res) => {
-            this.comments=res.data
-            console.log(res.data);
-          })
-    .catch((err) => {
+    await axios
+      .get("http://localhost:4201/api/Comments")
+      .then((res) => {
+        this.comments = res.data;
+        console.log(res.data);
+      })
+      .catch((err) => {
         this.data = console.log(err);
       });
-    ;
   },
   methods: {
     //CREER UN COMMENTAIRE
@@ -87,11 +119,12 @@ export default {
       };
       try {
         console.log(data);
-        await axios.post("http://localhost:4201/api/Comments", data , {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem("token")
-        },
-      })
+        await axios
+          .post("http://localhost:4201/api/Comments", data, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             console.log(res);
             location.reload();
@@ -106,7 +139,12 @@ export default {
     },
     //SUPPRIMER UN POST
     deletePost(id) {
-      axios.delete(`http://localhost:4201/api/contents/${id}`)
+      axios
+        .delete(`http://localhost:4201/api/contents/${id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then(() => {
           console.log("SUCCESS");
           location.reload();
@@ -118,7 +156,12 @@ export default {
     },
     //SUPPRIMER UN Commentaire
     deleteCom(id) {
-      axios.delete(`http://localhost:4201/api/Comments/${id}`)
+      axios
+        .delete(`http://localhost:4201/api/Comments/${id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then(() => {
           console.log("SUCCESS");
           location.reload();
@@ -141,32 +184,61 @@ export default {
   box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.527);
   :first-child {
     color: black;
-    font-weight: bold;    
+    font-weight: bold;
   }
-  .pseudo{
+  .pseudo {
     display: flex;
-    justify-self: left;
     margin-left: 20px;
   }
-   .commentaires{
+  //-----Commentaires-------
+  #commentaireLine {
+    border-top: 1px solid rgb(233, 218, 218);
+    padding-top: 20px;
+  }
+  .commentaires {
+    border: 2px solid transparent;
+  
+    .commentaire {
+      display: flex;
+    text-align: left;
+      margin-left: 20px;
+      margin-top:0px;
       
-      border:2px solid transparent; 
-  .commentaire{
-    display: flex;
-    justify-self: left;
-    margin-left: 20px;
-    line-height: 1px;
+    }
+    .deleteIcon{
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    .deleteicon{
+      border: transparent;
+      background-color: transparent;
+      font-size: 1.1em;
+      :hover{
+        color:red;
+      }
+    }
     }
   }
+  .textComment{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  .commentField {
+    width: 80%;
+  }
+  .buttonPlane {
+      background-color: transparent;
+      border: transparent;
+      font-size: 1.2em;
+      padding-left: 10px;
+      :hover{
+        color: white;
+      }
+    }
+}
   .black {
     color: black;
     font-size: 1.2em;
-  }
-  input {
-    border: none;
-    // background-color: rgb(189, 189, 189);
-    font-weight: bold;
-    font-size: 1.1em;
   }
 }
 img {
@@ -174,7 +246,7 @@ img {
   height: 100%;
   object-fit: cover;
 }
-.content{
-   align-items: center;
- }
+.content {
+  align-items: center;
+}
 </style>

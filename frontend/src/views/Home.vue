@@ -1,6 +1,7 @@
 <template>
+
   <div class="home">
-    <POST />
+    <Nav />
     <BDD />
 
   </div>
@@ -9,15 +10,17 @@
 <script>
 // @ is an alias to /src
 
+
+import Nav from "../components/Nav.vue";
 import BDD from "@/components/BDD.vue";
-import POST from "@/components/Post.vue";
+
 
 
 export default {
   name: "Home",
   components: {
     BDD,
-    POST,
+    Nav
   }}
 </script>
 
@@ -25,8 +28,7 @@ export default {
  body{
    margin: 0px;
    padding: 0px;
-   background-color: grey;
-   
+   background-color: white;
  }
  
 </style>

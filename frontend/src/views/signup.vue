@@ -1,5 +1,6 @@
-
 <template>
+<div>
+<NavAuth />
 <form>
 <div>
     <label for="email"></label>
@@ -11,29 +12,44 @@
   </div>
   <div>
     <label for="password"></label>
-    <input  id="password" placeholder="  Votre mot de passe" v-model="password" required>
+    <input type="password"  id="password" placeholder="  Votre mot de passe" v-model="password" required>
   </div>
   
-  <input type="submit" value="S'enregistrer" v-on:click="post">
- </form> 
+  <input class="save" type="submit" value="S'enregistrer" v-on:click="post">
+ </form>
+ </div>
 </template>
 
 <style scoped lang="scss">
 
+    form{
+  margin-top: 40%;
+  border: white;
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.527);
+}
     input{
         &:invalid:not(:focus):not(:placeholder-shown) {
-        background: pink;
-        }
-        font-size: 1.5em;
+        background: pink;}
+        font-size: 1.2em;
          margin:1em;
+         width: 80%;
         }
+     .save{
+           background-color: green;
+           color: white;
+           border: none;
+           border-radius: 3%;
+         }   
 </style>
 
 <script>
 import axios from "axios";
-
+import NavAuth from "../components/NavAuth.vue";
 export default {
   name: "SignUp",
+  components: {
+    NavAuth
+  },
   data(){
     return{
       email:"",

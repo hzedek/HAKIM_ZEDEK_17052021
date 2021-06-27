@@ -1,20 +1,19 @@
 <template>
+<div>
+  <Nav/>
   <article>
     <div>
-      <label for="title"></label>
-      <input type="text" v-model="title" placeholder="  Votre titre" />
-    </div>
-    <div>
       <label for="text"></label>
-      <input
-        class="text"
+      <textarea
         v-model="text"
         type="text"
         name="text"
-        placeholder="  ecrivez quelque chose"
-      />
+        placeholder="  ecrivez quelque chose..">
+      </textarea>
     </div>
-    <form enctype="multipart/form-data" action="/images">
+    <div><button @click="showModal">image</button>
+    <button>Gif</button></div>
+    <form v-if="showModal" enctype="multipart/form-data" action="/images">
         <label for="file"></label>
         <input type="file" v-on:change="selectFile" ref="image" name="multimedia" />
     </form>
@@ -26,12 +25,19 @@
 
     <input type="submit" v-on:click="post" value="Poster" />
   </article>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.text {
-  height: 50px;
-  width: 200px;
+textarea,form {
+margin-bottom:10%;
+}
+article{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10%;
+  
 }
 </style>
 
@@ -39,14 +45,13 @@
 import axios from "axios";
 import Search from "../components/Search.vue";
 import GifList from "../components/GifList.vue";
-
+import Nav from "../components/Nav.vue";
 
 export default {
-  components: {Search, GifList},
+  components: {Search, GifList,Nav},
   name: "Post",
   data() {
     return {
-      title: "",
       text: "",
       image:"",
       gifs: [],
@@ -69,12 +74,10 @@ export default {
       e.preventDefault();
       let formData = new FormData();
       formData.append('image',this.file);
-      formData.append('title',this.title);
       formData.append('text', this.text);
       formData.append('Users_id',JSON.parse(localStorage.getItem("userId")));
       formData.append('gif',this.gif)
       const data = {
-        title: this.title,
         text: this.text,
        image:this.file,
        gif:this.gif,
