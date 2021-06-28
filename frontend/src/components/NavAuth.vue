@@ -19,20 +19,21 @@ export default{
 
 <style lang="scss" scoped>
 header{
-  position: relative;
+
   margin-bottom: 80px;
+
 }
 img{
-    display: flex;
+   display: flex;
     height: 8em;
   width: 8em;
   position: absolute;
   top: -40px;
-  left: -15px;
+  left: 10px;
   }
 nav {
   position:absolute;
-  right: -10px;
+  right: 10px;
   top: 12px;
   a {
     font-weight: bold;

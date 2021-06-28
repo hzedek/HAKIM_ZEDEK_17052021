@@ -76,6 +76,8 @@ export default {
       image: "",
       gifs: [],
       gif: "",
+      User:[],
+      userid:localStorage.getItem("userId"),
        imageBtn: false,
       gifBtn: false
     };
@@ -89,6 +91,17 @@ export default {
       })
       .catch((err) => {
         this.data = console.log(err);
+      }),
+      await axios
+      .get(`http://localhost:4201/api/users/${this.userid}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => (this.User = response.data))
+      .catch((err) => {
+        this.data = console.log(err);
+        this.$router.replace("/login");
       });
   },
 

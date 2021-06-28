@@ -83,6 +83,7 @@ export default {
       .then((res) => (this.User = res.data))
       .catch((err) => {
         this.data = console.log(err);
+        this.$router.replace("/login");
       });
   },
 };

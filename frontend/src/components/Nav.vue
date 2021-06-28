@@ -28,7 +28,7 @@ img{
   width: 8em;
   position: absolute;
   top: -40px;
-  left: 0px;
+  left: 10px;
   }
 nav {
   position:absolute;

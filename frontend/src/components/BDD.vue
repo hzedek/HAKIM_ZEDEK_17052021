@@ -5,9 +5,22 @@
       v-bind:key="content.id + index"
       v-for="(content, index) in contents"
     >
-      <p class="pseudo">{{ content.User.pseudo }}</p>
-      <!--  <fa icon="paper-plane"/> -->
-      <!-- <p>{{ content.createdAt }}</p> -->
+      <div class="pseudoDisplay">
+        <h3>{{ content.User.pseudo }}</h3>
+       <div>
+        <router-link :to="{ name: 'modify', params: { id: `${content.id}` } }"
+          ><button class="green" v-if="content.Users_id == userid" type="button">
+            <fa icon="edit" /></button
+        ></router-link>
+        <button class="red"
+          type="button"
+          v-if="content.Users_id == userid || User.isAdmin == 1"
+          v-on:click="deletePost(content.id)"
+        >
+          <fa icon="times" />
+        </button>
+        </div> 
+      </div>
       <p class="content black">{{ content.text }}</p>
       <div v-if="content.multimedia">
         <img :src="`${content.multimedia}`" />
@@ -15,7 +28,7 @@
       <div v-if="content.gif">
         <img :src="`${content.gif}`" />
       </div>
-<!-- --------Commentaire------- -->
+      <!-- --------Commentaire------- -->
       <p id="commentaireLine">Commentaire</p>
       <div
         class="commentaires"
@@ -25,41 +38,31 @@
         <div v-if="content.id == commentaire.Contents_id">
           <p class="pseudo">{{ commentaire.User.pseudo }}</p>
           <div class="deleteIcon">
-          <p class="commentaire">{{ commentaire.comments }}</p>
-          <button class="deleteicon"
-            v-if="commentaire.Users_id == userid || User.isAdmin == 1"
-            v-on:click="deleteCom(commentaire.id)"
-          >
-            <fa class="red" icon="times-circle" />
-          </button>
+            <p class="commentaire">{{ commentaire.comments }}</p>
+            <button
+              class="deleteicon"
+              v-if="commentaire.Users_id == userid || User.isAdmin == 1"
+              v-on:click="deleteCom(commentaire.id)"
+            >
+              <fa icon="times-circle" />
+            </button>
           </div>
         </div>
       </div>
       <div class="textComment">
-      <textarea
-        class="commentField"
-        v-model="comment"
-        placeholder="Laissez un commentaire ..."
-        
-      ></textarea>
-      <button  class="buttonPlane" type="button" v-on:click="commentPost(content.id)">
-        <fa icon="paper-plane" />
-      </button>
+        <textarea
+          class="commentField"
+          v-model="comment"
+          placeholder="Laissez un commentaire ..."
+        ></textarea>
+        <button
+          class="buttonPlane"
+          type="button"
+          v-on:click="commentPost(content.id)"
+        >
+          <fa icon="paper-plane" />
+        </button>
       </div>
-
-
-      <button
-        type="button"
-        v-if="content.Users_id == userid || User.isAdmin == 1"
-        v-on:click="deletePost(content.id)"
-      >
-        Supprimer
-      </button>
-      <router-link :to="{ name: 'modify', params: { id: `${content.id}` } }"
-        ><button v-if="content.Users_id == userid" type="button">
-          Modifier
-        </button></router-link
-      >
     </div>
   </article>
 </template>
@@ -98,6 +101,7 @@ export default {
       .then((response) => (this.User = response.data))
       .catch((err) => {
         this.data = console.log(err);
+        this.$router.push("/login");
       });
     await axios
       .get("http://localhost:4201/api/Comments")
@@ -182,16 +186,34 @@ export default {
   margin-top: 1.2em;
   border-radius: 10px;
   box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.527);
-  :first-child {
+  h3{
     color: black;
     font-weight: bold;
+    margin-left: 20px;
   }
-  .content{
+  .content {
     text-align: center;
+  }
+  .pseudoDisplay{
+    display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+  button{
+    border: none;
+    font-size: 1.3em;
+    background-color: transparent;
+  }}
+  .green:hover{ color: green;}
+  
+  .red{
+    :hover{color: red;}
+    margin-right: 20px;
+    margin-left: 10px;
   }
   .pseudo {
     display: flex;
     margin-left: 20px;
+    margin-top: 0px;
   }
   //-----Commentaires-------
   #commentaireLine {
@@ -201,46 +223,48 @@ export default {
   }
   .commentaires {
     border: 2px solid transparent;
-  
+
     .commentaire {
       display: flex;
-    text-align: left;
+      text-align: left;
       margin-left: 20px;
-      margin-top:0px;
-      line-height: 0px;      
+      margin-top: 0px;
+      line-height: 0px;
+      font-size: 0.9em;
+       color:rgb(75, 75, 75);
     }
-    .deleteIcon{
+    .deleteIcon {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-    .deleteicon{
-      border: transparent;
-      background-color: transparent;
-      font-size: 1.1em;
-      :hover{
-        color:red;
+      .deleteicon {
+        border: transparent;
+        background-color: transparent;
+        font-size: 1.1em;
+        :hover {
+          color: red;
+        }
       }
     }
-    }
   }
-  .textComment{
+  .textComment {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-  .commentField {
-    width: 80%;
-  }
-  .buttonPlane {
+    .commentField {
+      width: 80%;
+    }
+    .buttonPlane {
       background-color: transparent;
       border: transparent;
       font-size: 1.2em;
       padding-left: 10px;
-      :hover{
+      :hover {
         color: white;
       }
     }
-}
+  }
   .black {
     color: black;
     font-size: 1.2em;

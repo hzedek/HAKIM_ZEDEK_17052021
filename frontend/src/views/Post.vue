@@ -78,9 +78,24 @@ export default {
       Users_id:"",
       gif:"",
       imageBtn: false,
-      gifBtn: false
+      gifBtn: false,
+      User:[],
+      userid:localStorage.getItem("userId"),
     };
   },
+    async mounted() {
+ await axios
+      .get(`http://localhost:4201/api/users/${this.userid}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => (this.User = response.data))
+      .catch((err) => {
+        this.data = console.log(err);
+        this.$router.replace("/login");
+      });
+      },
 
   methods: {
     gotUrl:function(value){
