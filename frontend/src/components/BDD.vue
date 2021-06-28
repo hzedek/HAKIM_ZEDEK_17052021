@@ -27,7 +27,7 @@
           <div class="deleteIcon">
           <p class="commentaire">{{ commentaire.comments }}</p>
           <button class="deleteicon"
-            v-if="commentaire.Users_id == userid"
+            v-if="commentaire.Users_id == userid || User.isAdmin == 1"
             v-on:click="deleteCom(commentaire.id)"
           >
             <fa class="red" icon="times-circle" />
@@ -50,7 +50,7 @@
 
       <button
         type="button"
-        v-if="content.Users_id == userid"
+        v-if="content.Users_id == userid || User.isAdmin == 1"
         v-on:click="deletePost(content.id)"
       >
         Supprimer
@@ -90,12 +90,12 @@ export default {
       });
 
     await axios
-      .get("http://localhost:4201/api/users", {
+      .get(`http://localhost:4201/api/users/${this.userid}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((response) => (this.User = response))
+      .then((response) => (this.User = response.data))
       .catch((err) => {
         this.data = console.log(err);
       });

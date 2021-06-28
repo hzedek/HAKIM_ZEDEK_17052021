@@ -67,7 +67,7 @@ exports.login = (req, res) => {
 
 exports.get= (req, res) => {
   
-  User.findAll()
+  User.findOne({ where: { id:req.params.id } })
   .then(data => {
     res.send(data);
   })
