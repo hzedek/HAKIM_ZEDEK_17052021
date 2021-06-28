@@ -5,7 +5,7 @@ module.exports = app => {
     const express = require('express');
 
     
-    router.post("/",basicAuth, Comments.create);
+    router.post("/", Comments.create);
     router.get("/",  Comments.get);
     router.get("/:Contents_id",  Comments.getById);
     router.delete("/:id",basicAuth, Comments.delete);

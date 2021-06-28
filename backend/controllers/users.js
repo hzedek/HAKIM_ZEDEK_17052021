@@ -3,6 +3,8 @@ const User=db.Users;
 const Op = db.Sequelize.Op;
 const bcrypt = require ('bcrypt');
 const jwt = require('jsonwebtoken');
+const Comments = db.Comments;
+const Contents= db.Contents;
 
 // create a user
 exports.signup = (req, res) => {
@@ -78,5 +80,14 @@ exports.get= (req, res) => {
 
 // Delete a user with the specified id in the request
 exports.delete = (req, res) => {
-  
+  Comments.destroy({where:{Users_id: req.params.id}})
+  .then(() => res.status(200).json({ message: 'utilisateur supprimé !' }))
+  .catch(error => console.log(error))
+  Contents.destroy({where:{Users_id: req.params.id}})
+  .then(() => res.status(200).json({ message: 'utilisateur supprimé !' }))
+  .catch(error => console.log(error))
+  User.destroy({ where:{id: req.params.id }})
+  .then(() => res.status(200).json({ message: 'utilisateur supprimé !' }))
+  .catch(error => console.log(error))
+
 };

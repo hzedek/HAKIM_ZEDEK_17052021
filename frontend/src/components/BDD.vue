@@ -186,6 +186,9 @@ export default {
     color: black;
     font-weight: bold;
   }
+  .content{
+    text-align: center;
+  }
   .pseudo {
     display: flex;
     margin-left: 20px;
@@ -194,6 +197,7 @@ export default {
   #commentaireLine {
     border-top: 1px solid rgb(233, 218, 218);
     padding-top: 20px;
+    text-align: center;
   }
   .commentaires {
     border: 2px solid transparent;
@@ -203,7 +207,7 @@ export default {
     text-align: left;
       margin-left: 20px;
       margin-top:0px;
-      
+      line-height: 0px;      
     }
     .deleteIcon{
       display: flex;
@@ -223,6 +227,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
   .commentField {
     width: 80%;
   }

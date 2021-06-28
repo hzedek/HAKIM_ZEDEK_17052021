@@ -20,8 +20,7 @@ export default{
 
 <style lang="scss" scoped>
 header{
-  position: relative;
-  margin-bottom: 80px;
+margin-bottom: 80px;
 }
 img{
     display: flex;

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div >
   <Nav/>
   <article>
     <div>
@@ -11,33 +11,53 @@
         placeholder="  ecrivez quelque chose..">
       </textarea>
     </div>
-    <div><button @click="showModal">image</button>
-    <button>Gif</button></div>
-    <form v-if="showModal" enctype="multipart/form-data" action="/images">
+    <div class="btn">
+    <button v-if="!gifBtn" v-on:click="imageBtn = !imageBtn">image</button>
+    <button v-if="!imageBtn" v-on:click="gifBtn = !gifBtn">Gif</button>
+    </div>
+   <form v-show="imageBtn" enctype="multipart/form-data" action="/images">
         <label for="file"></label>
         <input type="file" v-on:change="selectFile" ref="image" name="multimedia" />
     </form>
 
-    <Search @fetch-gifs="onFetch" />
+    <Search v-show="gifBtn" @fetch-gifs="onFetch" />
     <Gif-list :gifs="gifs" @giveUrl="gotUrl" />
- 
 
-
-    <input type="submit" v-on:click="post" value="Poster" />
+    <input  class="submit" type="submit" v-on:click="post" value="Poster" />
   </article>
   </div>
 </template>
 
 <style lang="scss" scoped>
+article{
+  text-align: center;
+  margin-top:80%;
+}
 textarea,form {
 margin-bottom:10%;
 }
-article{
+.btn{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10%;
-  
+  justify-content: space-around;
+      button{
+     box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.27);
+     width: 80px;
+     border: none;
+  background-color: salmon;
+  margin-bottom:30px ;
+  padding: 2%;
+  border-radius: 5%;
+   }
+}
+.submit{
+  background-color: green;
+  font-weight: bold;
+  color: white;
+  border: none;
+  padding: 3%;
+  width: 120px;
+   border-radius: 5%;
+   box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.27);
 }
 </style>
 
@@ -56,7 +76,9 @@ export default {
       image:"",
       gifs: [],
       Users_id:"",
-      gif:""
+      gif:"",
+      imageBtn: false,
+      gifBtn: false
     };
   },
 

@@ -3,6 +3,7 @@ const Content = db.Contents;
 const Op = db.Sequelize.Op;
 const fs = require('fs');
 const multer = require('multer');
+const Comments= db.Comments;
 
 
 exports.create = (req, res) => {
@@ -131,11 +132,18 @@ exports.delete = (req, res) => {
       if (result.multimedia) {
         const filename = result.multimedia.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {})
+      Comments.destroy({where:{Contents_id:req.params.id}})
+      .then(() => res.status(200).json({ message: 'messages supprimée !' }))
+          .catch(error => console.log(error))
         Content.destroy({ where: { id: req.params.id } })
           .then(() => res.status(200).json({ message: 'Content supprimée !' }))
           .catch(error => console.log(error))
       }
-      else{Content.destroy({ where: { id: req.params.id } })
+      else{
+        Comments.destroy({where:{Contents_id:req.params.id}})
+      .then(() => res.status(200).json({ message: 'Content supprimée !' }))
+          .catch(error => console.log(error))
+        Content.destroy({ where: { id: req.params.id } })
       .then(() => res.status(200).json({ message: 'COntent supprimée !' }))
       .catch(error => console.log(error))}
     })
