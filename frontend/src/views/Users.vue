@@ -62,6 +62,7 @@ export default {
         })
         .then(() => {
           console.log("SUCCESS");
+          localStorage.clear();
           this.$router.replace("/signup");
         })
         .catch((err) => {

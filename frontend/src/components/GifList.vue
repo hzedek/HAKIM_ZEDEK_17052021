@@ -15,7 +15,6 @@ export default {
     methods:{
       getUrl: function (value){
      this.$emit('giveUrl', value)
-     
         }
     
     }}

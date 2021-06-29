@@ -23,7 +23,7 @@
       </div>
       <p class="content black">{{ content.text }}</p>
       <div v-if="content.multimedia">
-        <img :src="`${content.multimedia}`" />
+        <img :src="`${content.multimedia}`" alt="{{content.multimedia}}" />
       </div>
       <div v-if="content.gif">
         <img :src="`${content.gif}`" />
@@ -180,12 +180,20 @@ export default {
 </script>
 
  <style scoped lang="scss">
+ @media (min-width: 600px) {
+   article{width:60%;
+margin-left: 20%;
+   }
+    
+    
+  }
 .contents {
   border: 2px solid transparent;
   background-color: rgb(218, 147, 147);
   margin-top: 1.2em;
   border-radius: 10px;
   box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.527);
+
   h3{
     color: black;
     font-weight: bold;

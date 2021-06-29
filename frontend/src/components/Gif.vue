@@ -1,11 +1,10 @@
 <template>
-  <div
+   <button v-on:click.once="copyUrl"><div
     class="gif"
     :style="{ backgroundImage: `url(${gif.images.original.url})` }"
   >
-  
-    <button  v-on:click="copyUrl">ajouter</button>
   </div>
+    </button>
 </template>
 
 <script>
@@ -14,13 +13,14 @@ export default {
   data(){
     return{     
       gifs:[],
+      ajouté:"ajouté"
     }},
   props: {
     gif: Object,
   },
   methods: {
     copyUrl() {
-      this.$emit("gifUrl",this.gif.images.original.url)
+      this.$emit("gifUrl",this.gif.images.original.url);
     },
   },
 };

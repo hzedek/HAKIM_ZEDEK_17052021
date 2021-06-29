@@ -37,28 +37,6 @@ exports.get = (req, res) => {
       });
   };
 
-  exports.getById = (req, res) => {
-    Comments.findAll({ where: {Contents_id:req.params.Contents_id } })
-      .then(data => {
-        res.status(200).send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Contents."
-        });
-      });
-  };
-
-  exports.update = (req, res) => {
-    const id = req.params.id;
-        Comments.update({comments:req.body.comments},{
-      where: { id: id }}
-      )
-    .then((data) => res.status(200).json({ message: 'Commentaire update !' }))
-    .catch(error => console.log(error))
-  };
-
   // Delete a Comments with the specified id in the request
 exports.delete = (req, res) => {
 

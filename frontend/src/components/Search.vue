@@ -9,17 +9,9 @@ export default {
     data(){
         return{
             keyword:"",
-            timeout:null,
         }
     },
    methods:{
-     /*  timeSearch(){
-           let timeout=this.timeout;
-           clearTimeout(timeout);
-        timeout = setTimeout(()=>{
-               this.search();
-           }, timeout=500)
-       },*/
        search(){
           
            axios.get(`https://api.giphy.com/v1/gifs/search?api_key=hcbliDOiKNH4fFQ4Dh4CiqkAIBulLtit&q=${this.keyword}&limit=9`)

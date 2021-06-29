@@ -21,7 +21,7 @@
     </form>
 
     <Search v-show="gifBtn" @fetch-gifs="onFetch" />
-    <Gif-list :gifs="gifs" @giveUrl="gotUrl" />
+    <Gif-list v-show="gifBtn" :gifs="gifs" @giveUrl="gotUrl" />
 
     <input  class="submit" type="submit" v-on:click="post" value="Poster" />
   </article>
@@ -31,7 +31,7 @@
 <style lang="scss" scoped>
 article{
   text-align: center;
-  margin-top:80%;
+  margin-top:50px;
 }
 textarea,form {
 margin-bottom:10%;
